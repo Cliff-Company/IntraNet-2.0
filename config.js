@@ -4,7 +4,7 @@
 //  (Implementar → Administrar implementaciones → URL)
 // =====================================================
 window.INTRANET_CONFIG = {
-    API_URL: 'PEGA_AQUI_LA_URL_DE_TU_WEB_APP'
+    API_URL: 'https://script.google.com/macros/s/AKfycbx-vww58F5wa__WjVsGlStakQB2xQpCpl-JuQC9b4mG3gK1EpRCyqsKdmJVeJcZpwtrxg/exec'
 };
 
 // Utilidades compartidas por index.html e intranet.html
