@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IntraNET Cliff 2.0 | Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--negro:#000;--negro2:#1a1a1a;--negro3:#2d2d2d;--amarillo:#FFC107;--amarillo2:#FFD54F;--gris:#B0B0B0;--borde:#404040;--rojo:#ff6b6b;--verde:#4CAF50}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Outfit',sans-serif;background:var(--negro);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(90deg,rgba(255,193,7,.03) 1px,transparent 1px),linear-gradient(rgba(255,193,7,.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+    .caja{position:relative;width:100%;max-width:420px;background:var(--negro2);border:3px solid var(--amarillo);border-radius:8px;padding:32px 30px 24px}
+    .logo{text-align:center;margin-bottom:8px}
+    .logo img{max-width:120px;max-height:90px;object-fit:contain}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;text-align:center;color:#fff;line-height:1}
+    h1 span{color:var(--amarillo)}
+    .sub{text-align:center;color:var(--gris);font-size:14px;margin:6px 0 22px}
+    .tabs{display:flex;border:2px solid var(--borde);border-radius:6px;overflow:hidden;margin-bottom:20px}
+    .tabs button{flex:1;background:transparent;border:0;color:var(--gris);padding:11px;font:600 15px 'Outfit',sans-serif;cursor:pointer;letter-spacing:.5px}
+    .tabs button.on{background:var(--amarillo);color:#000}
+    .vista{display:none}.vista.on{display:block}
+    label{display:block;font-size:13px;font-weight:600;color:var(--gris);margin-bottom:6px;letter-spacing:.3px}
+    .campo{position:relative;margin-bottom:14px}
+    input{width:100%;background:var(--negro3);border:2px solid var(--borde);border-radius:6px;color:#fff;padding:12px 14px;font:16px 'Outfit',sans-serif;outline:none;transition:border-color .2s}
+    input:focus{border-color:var(--amarillo)}
+    input.codigo{text-align:center;font-size:28px;letter-spacing:10px;font-weight:700}
+    .ojo{position:absolute;right:8px;bottom:8px;background:transparent;border:0;color:var(--gris);font-size:18px;cursor:pointer;padding:4px 6px}
+    .btn{width:100%;background:var(--amarillo);color:#000;border:0;border-radius:6px;padding:14px;font:700 17px 'Outfit',sans-serif;letter-spacing:1px;cursor:pointer;margin-top:6px;transition:filter .2s}
+    .btn:hover{filter:brightness(1.08)}
+    .btn:disabled{opacity:.6;cursor:default}
+    .enlace{background:none;border:0;color:var(--amarillo);font:600 14px 'Outfit',sans-serif;cursor:pointer;text-decoration:underline;padding:0}
+    .fila-enlaces{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:14px;color:var(--gris);gap:10px;flex-wrap:wrap}
+    .ayuda{font-size:12.5px;color:var(--gris);margin-top:-8px;margin-bottom:12px}
+    .msg{margin-top:14px;padding:10px 12px;border-radius:6px;font-size:14px;line-height:1.4;display:none}
+    .msg.error{display:block;background:rgba(255,107,107,.12);border:1px solid var(--rojo);color:#ffb3b3}
+    .msg.ok{display:block;background:rgba(76,175,80,.12);border:1px solid var(--verde);color:#b9f6ca}
+    .msg.info{display:block;background:rgba(255,193,7,.1);border:1px solid var(--amarillo);color:var(--amarillo2)}
+    .titulo-vista{font-size:18px;font-weight:700;margin-bottom:6px}
+    .texto-vista{color:var(--gris);font-size:14px;margin-bottom:16px;line-height:1.45}
+    .texto-vista b{color:#fff}
+    .pie{text-align:center;color:#666;font-size:12px;margin-top:22px}
+    .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:g .8s linear infinite;vertical-align:-3px;margin-right:6px}
+    @keyframes g{to{transform:rotate(360deg)}}
+    @keyframes sacudir{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+    .sacudir{animation:sacudir .4s}
+  </style>
+</head>
+<body>
+  <div class="caja" id="caja">
+    <div class="logo"><img src="img/loguito.png" alt="Logo IntraNET Cliff" onerror="this.style.display='none'"></div>
+    <h1>IntraNET <span>Cliff</span> 2.0</h1>
+    <p class="sub">Acceso para el equipo de Cliff and Company</p>
+
+    <div class="tabs" id="tabs">
+      <button type="button" data-v="login" class="on">Iniciar sesión</button>
+      <button type="button" data-v="registro">Crear cuenta</button>
+    </div>
+
+    <!-- INICIAR SESIÓN -->
+    <form class="vista on" id="v-login" novalidate>
+      <div class="campo"><label for="l-email">Correo</label>
+        <input id="l-email" type="email" autocomplete="username" placeholder="tu@cliff.com.mx"></div>
+      <div class="campo"><label for="l-pass">Contraseña</label>
+        <input id="l-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña">
+        <button type="button" class="ojo" data-ojo="l-pass" aria-label="Mostrar contraseña">👁️</button></div>
+      <button class="btn" type="submit">Ingresar</button>
+      <div class="fila-enlaces"><button type="button" class="enlace" data-ir="olvide">¿Olvidaste tu contraseña?</button></div>
+    </form>
+
+    <!-- CREAR CUENTA -->
+    <form class="vista" id="v-registro" novalidate>
+      <div class="campo"><label for="r-nombre">Nombre completo</label>
+        <input id="r-nombre" type="text" autocomplete="name" placeholder="Nombre y apellidos"></div>
+      <div class="campo"><label for="r-email">Correo</label>
+        <input id="r-email" type="email" autocomplete="email" placeholder="tu@cliff.com.mx"></div>
+      <div class="campo"><label for="r-pass">Contraseña</label>
+        <input id="r-pass" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+        <button type="button" class="ojo" data-ojo="r-pass" aria-label="Mostrar contraseña">👁️</button></div>
+      <p class="ayuda">Al menos 8 caracteres, con letras y números.</p>
+      <div class="campo"><label for="r-pass2">Confirmar contraseña</label>
+        <input id="r-pass2" type="password" autocomplete="new-password" placeholder="Repite tu contraseña"></div>
+      <button class="btn" type="submit">Crear cuenta</button>
+    </form>
+
+    <!-- VERIFICAR CORREO -->
+    <form class="vista" id="v-verificar" novalidate>
+      <p class="titulo-vista">Verifica tu correo</p>
+      <p class="texto-vista">Te enviamos un código de 6 dígitos a <b id="ver-email"></b>. Revisa también tu carpeta de spam.</p>
+      <div class="campo"><input id="ver-codigo" class="codigo" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••"></div>
+      <button class="btn" type="submit">Verificar y entrar</button>
+      <div class="fila-enlaces">
+        <button type="button" class="enlace" id="reenviar-registro">Reenviar código</button>
+        <button type="button" class="enlace" data-ir="login">Volver</button>
+      </div>
+    </form>
+
+    <!-- OLVIDÉ MI CONTRASEÑA -->
+    <form class="vista" id="v-olvide" novalidate>
+      <p class="titulo-vista">Recuperar contraseña</p>
+      <p class="texto-vista">Escribe tu correo y te enviaremos un código para crear una contraseña nueva.</p>
+      <div class="campo"><label for="o-email">Correo</label>
+        <input id="o-email" type="email" autocomplete="email" placeholder="tu@cliff.com.mx"></div>
+      <button class="btn" type="submit">Enviar código</button>
+      <div class="fila-enlaces"><button type="button" class="enlace" data-ir="login">Volver a iniciar sesión</button></div>
+    </form>
+
+    <!-- RESTABLECER -->
+    <form class="vista" id="v-restablecer" novalidate>
+      <p class="titulo-vista">Crea tu nueva contraseña</p>
+      <p class="texto-vista">Escribe el código que enviamos a <b id="res-email"></b> y tu nueva contraseña.</p>
+      <div class="campo"><input id="res-codigo" class="codigo" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••"></div>
+      <div class="campo"><label for="res-pass">Nueva contraseña</label>
+        <input id="res-pass" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+        <button type="button" class="ojo" data-ojo="res-pass" aria-label="Mostrar contraseña">👁️</button></div>
+      <div class="campo"><label for="res-pass2">Confirmar contraseña</label>
+        <input id="res-pass2" type="password" autocomplete="new-password" placeholder="Repite tu contraseña"></div>
+      <button class="btn" type="submit">Guardar y entrar</button>
+      <div class="fila-enlaces">
+        <button type="button" class="enlace" id="reenviar-recuperar">Reenviar código</button>
+        <button type="button" class="enlace" data-ir="login">Volver</button>
+      </div>
+    </form>
+
+    <div class="msg" id="msg"></div>
+    <p class="pie">Sistema de acceso seguro | v2.0</p>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    const $ = id => document.getElementById(id);
+    let emailPendiente = '';
+
+    // Si ya hay sesión, entrar directo
+    if (Intranet.leerSesion()) location.replace('intranet.html');
+
+    function ir(v) {
+      document.querySelectorAll('.vista').forEach(f => f.classList.toggle('on', f.id === 'v-' + v));
+      document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+      $('tabs').style.display = (v === 'login' || v === 'registro') ? 'flex' : 'none';
+      mensaje('');
+      const primero = document.querySelector('#v-' + v + ' input');
+      if (primero) setTimeout(() => primero.focus(), 30);
+    }
+    function mensaje(texto, tipo) {
+      const m = $('msg');
+      m.className = 'msg' + (texto ? ' ' + (tipo || 'error') : '');
+      m.textContent = texto || '';
+      if (texto && (tipo || 'error') === 'error') { $('caja').classList.remove('sacudir'); void $('caja').offsetWidth; $('caja').classList.add('sacudir'); }
+    }
+    async function cargando(form, fn) {
+      const btn = form.querySelector('.btn');
+      const txt = btn.textContent;
+      btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Procesando…';
+      try { await fn(); } finally { btn.disabled = false; btn.textContent = txt; }
+    }
+    function entrar(r) { Intranet.guardarSesion(r); mensaje('✅ ¡Bienvenido, ' + r.usuario.nombre.split(' ')[0] + '! Entrando…', 'ok'); setTimeout(() => location.replace('intranet.html'), 700); }
+    const emailOk = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+    function passError(p, p2) {
+      if (p.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+      if (!/[A-Za-z]/.test(p) || !/[0-9]/.test(p)) return 'La contraseña debe incluir letras y números.';
+      if (p !== p2) return 'Las contraseñas no coinciden.';
+      return '';
+    }
+
+    document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => ir(b.dataset.v));
+    document.querySelectorAll('[data-ir]').forEach(b => b.onclick = () => ir(b.dataset.ir));
+    document.querySelectorAll('[data-ojo]').forEach(b => b.onclick = () => {
+      const i = $(b.dataset.ojo); i.type = i.type === 'password' ? 'text' : 'password';
+      b.textContent = i.type === 'password' ? '👁️' : '🙈';
+    });
+    document.querySelectorAll('input.codigo').forEach(i => i.addEventListener('input', () => { i.value = i.value.replace(/\D/g, '').slice(0, 6); }));
+
+    // Iniciar sesión
+    $('v-login').onsubmit = e => { e.preventDefault(); const f = e.target; cargando(f, async () => {
+      const email = $('l-email').value.trim().toLowerCase(), password = $('l-pass').value;
+      if (!emailOk(email) || !password) return mensaje('Escribe tu correo y contraseña.');
+      const r = await Intranet.api('login', { email, password });
+      if (r.ok) return entrar(r);
+      if (r.codigo === 'NO_VERIFICADO') { emailPendiente = email; $('ver-email').textContent = email; ir('verificar'); return mensaje(r.error, 'info'); }
+      $('l-pass').value = ''; mensaje(r.error);
+    }); };
+
+    // Crear cuenta
+    $('v-registro').onsubmit = e => { e.preventDefault(); const f = e.target; cargando(f, async () => {
+      const nombre = $('r-nombre').value.trim(), email = $('r-email').value.trim().toLowerCase();
+      const p = $('r-pass').value, p2 = $('r-pass2').value;
+      if (nombre.length < 3) return mensaje('Escribe tu nombre completo.');
+      if (!emailOk(email)) return mensaje('El correo no es válido.');
+      const pe = passError(p, p2); if (pe) return mensaje(pe);
+      const r = await Intranet.api('registrar', { nombre, email, password: p });
+      if (!r.ok) return mensaje(r.error);
+      emailPendiente = email; $('ver-email').textContent = email; ir('verificar'); mensaje(r.mensaje, 'ok');
+    }); };
+
+    // Verificar correo
+    $('v-verificar').onsubmit = e => { e.preventDefault(); const f = e.target; cargando(f, async () => {
+      const codigo = $('ver-codigo').value;
+      if (codigo.length !== 6) return mensaje('Escribe el código de 6 dígitos.');
+      const r = await Intranet.api('verificar', { email: emailPendiente, codigo });
+      r.ok ? entrar(r) : mensaje(r.error);
+    }); };
+    $('reenviar-registro').onclick = async () => { const r = await Intranet.api('reenviarCodigo', { email: emailPendiente, tipo: 'registro' }); mensaje(r.mensaje || r.error, r.ok ? 'ok' : 'error'); };
+
+    // Olvidé mi contraseña
+    $('v-olvide').onsubmit = e => { e.preventDefault(); const f = e.target; cargando(f, async () => {
+      const email = $('o-email').value.trim().toLowerCase();
+      if (!emailOk(email)) return mensaje('Escribe un correo válido.');
+      const r = await Intranet.api('olvide', { email });
+      if (!r.ok) return mensaje(r.error);
+      emailPendiente = email; $('res-email').textContent = email; ir('restablecer'); mensaje(r.mensaje, 'info');
+    }); };
+
+    // Restablecer
+    $('v-restablecer').onsubmit = e => { e.preventDefault(); const f = e.target; cargando(f, async () => {
+      const codigo = $('res-codigo').value, p = $('res-pass').value, p2 = $('res-pass2').value;
+      if (codigo.length !== 6) return mensaje('Escribe el código de 6 dígitos.');
+      const pe = passError(p, p2); if (pe) return mensaje(pe);
+      const r = await Intranet.api('restablecer', { email: emailPendiente, codigo, password: p });
+      r.ok ? entrar(r) : mensaje(r.error);
+    }); };
+    $('reenviar-recuperar').onclick = async () => { const r = await Intranet.api('reenviarCodigo', { email: emailPendiente, tipo: 'recuperar' }); mensaje(r.mensaje || r.error, r.ok ? 'ok' : 'error'); };
+
+    // Correo prellenado desde la URL (?email=)
+    const pre = new URLSearchParams(location.search).get('email');
+    if (pre) { $('l-email').value = pre; $('l-pass').focus(); } else { $('l-email').focus(); }
+  </script>
+</body>
+</html>
